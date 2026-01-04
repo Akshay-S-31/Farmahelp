@@ -145,7 +145,7 @@ if uploaded_file is not None:
                 
                 # 3. DISPLAY RESULTS
                 st.success(f"**രോഗനിർണ്ണയം:** {display_name}")  # Diagnosis in Malayalam
-                st.info(f"**Confidence:** {confidence:.2%}")
+                st.info(f"**വിശ്വാസം:** {confidence:.2%}")
                 st.warning(f"**പ്രതിവിധി:** {recommended_cure}") # Cure in Malayalam
 # --- PART 2: MAP SEARCH ---
 st.divider()
