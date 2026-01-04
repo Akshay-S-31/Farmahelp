@@ -91,18 +91,34 @@ if uploaded_file is not None:
                 # Predict
                 prediction = model.predict(data)
                 index = np.argmax(prediction)
-                
-                # ⚠️ UPDATE LABELS TO MATCH YOUR TRAINING
+
                 class_names = ["Brown Spot", "Bacterial Blight", "Healthy"] 
                 diagnosis = class_names[index]
                 confidence = float(prediction[0][index])
                 
+                # 2. DEFINE CURES (The Missing Part)
+                cures = {
+                    "Brown Spot": "Use fungicides like Propiconazole (Tilt) or Mancozeb. Improve soil nutrients.",
+                    "Bacterial Blight": "Spray Copper Oxychloride + Streptocycline. Reduce Nitrogen usage.",
+                    "Healthy": "No pesticides needed. Keep maintaining water levels."
+                }
+                
+                # Get the cure for the detected disease
+                recommended_cure = cures.get(diagnosis, "Consult an expert.")
+                
+                # Save to session (so Voice Assistant knows the cure too!)
+                st.session_state['last_diagnosis'] = diagnosis
+                st.session_state['last_cure'] = recommended_cure
+                
+                # 3. DISPLAY RESULTS
+                st.success(f"**Diagnosis:** {diagnosis}")
+                st.info(f"**Confidence:** {confidence:.2%}")
+                st.warning(f"**Recommended Cure:** {recommended_cure}")
+                 
                 # Save Diagnosis for later use
                 st.session_state['last_diagnosis'] = diagnosis
                 
-                # Show Result
-                st.success(f"**Diagnosis:** {diagnosis}")
-                st.info(f"**Confidence:** {confidence:.2%}")
+                
 
 # --- PART 2: MAP SEARCH (No Defaults) ---
 st.divider()
