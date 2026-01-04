@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Streamlit
+.streamlit/
+
+# Models (Optional: Comment out if you WANT to push the model)
+# rice_model.h5
+
+# OS
+.DS_Store
+Thumbs.db
