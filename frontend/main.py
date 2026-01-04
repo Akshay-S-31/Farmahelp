@@ -5,6 +5,20 @@ import numpy as np
 import requests
 import pandas as pd
 
+import os
+
+print("--- DEBUGGING PATHS ---")
+print(f"Current Working Directory: {os.getcwd()}")
+
+# Check if the script sees the 'frontend' folder
+if os.path.exists('frontend'):
+    print(f"Files in 'frontend': {os.listdir('frontend')}")
+else:
+    print("❌ The script cannot see a 'frontend' folder from here.")
+
+print("Files in current root:", os.listdir())
+print("-----------------------")
+
 # --- CONFIGURATION ---
 st.set_page_config(page_title="Rice Disease Detector", page_icon="🌾", layout="wide")
 
@@ -13,7 +27,7 @@ st.set_page_config(page_title="Rice Disease Detector", page_icon="🌾", layout=
 def load_model():
     try:
         # Ensure 'rice_model.h5' is in the SAME folder as this file
-        model = tf.keras.models.load_model('rice_model.h5')
+        model = tf.keras.models.load_model('frontend/rice_model.h5')
         return model
     except Exception as e:
         return None
