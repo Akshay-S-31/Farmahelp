@@ -72,7 +72,7 @@ uploaded_file = st.file_uploader("Upload a rice leaf photo", type=["jpg", "jpeg"
 
 if uploaded_file is not None:
     # Display Image
-    image = Image.open(uploaded_file)
+    image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Scanned Image", width=300)
     
     if st.button("Analyze Infection"):
