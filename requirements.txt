@@ -1,4 +1,7 @@
+streamlit
 python-dotenv
 geopy
 gTTS
 googletrans==4.0.0-rc1
+httpx==0.20.0
+legacy-cgi
