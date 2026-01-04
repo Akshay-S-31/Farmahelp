@@ -8,7 +8,7 @@ import os
 
 # --- CONFIGURATION ---
 # This must be the first Streamlit command
-st.set_page_config(page_title="Rice Disease Detector", page_icon="🌾", layout="wide")
+st.set_page_config(page_title="നെല്ല് രോഗനിർണയം", page_icon="🌾", layout="wide")
 
 # --- DEBUGGING PATHS (Logs to Console) ---
 print("--- DEBUGGING PATHS ---")
@@ -87,22 +87,22 @@ def get_real_shops(lat, lon, radius=5000):
 
 # --- UI STARTS HERE ---
 
-st.title("🌾 Rice Disease Detector")
+st.title("🌾 നെല്ല് രോഗനിർണയം")
 
 # --- PART 1: DISEASE DETECTION ---
-st.header("1. Scan Crop")
-uploaded_file = st.file_uploader("Upload a rice leaf photo", type=["jpg", "jpeg", "png"])
+st.header("1. ക്രോപ്പ് സ്കാൻ ചെയ്യുക")
+uploaded_file = st.file_uploader("നെല്ലിന്റെ ഒരു ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യുക", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # Display Image
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Scanned Image", width=300)
     
-    if st.button("Analyze Infection"):
+    if st.button("അണുബാധ വിശകലനം ചെയ്യുക"):
         if model is None:
             st.error("❌ Model not found! Upload 'rice_model.h5' to your folder.")
         else:
-            with st.spinner("Scanning for pathogens..."):
+            with st.spinner("രോഗാണുക്കൾക്കായി സ്കാൻ ചെയ്യുന്നു..."):
                 # Pre-process Image
                 size = (224, 224)
                 image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
@@ -121,40 +121,40 @@ if uploaded_file is not None:
                 
                 # 2. DEFINE CURES
                 cures = {
-                    "Brown Spot": "Use fungicides like Propiconazole (Tilt) or Mancozeb. Improve soil nutrients.",
-                    "Bacterial Blight": "Spray Copper Oxychloride + Streptocycline. Reduce Nitrogen usage.",
-                    "Healthy": "No pesticides needed. Keep maintaining water levels."
+                    "ബ്രൗൺ സ്പോട്ട്": "പ്രോപികൊണസോൾ (ടിൽറ്റ്) അല്ലെങ്കിൽ മാങ്കോസെബ് പോലുള്ള കുമിൾനാശിനികൾ ഉപയോഗിക്കുക. മണ്ണിലെ പോഷകങ്ങൾ മെച്ചപ്പെടുത്തുക.",
+                    "ബാക്ടീരിയൽ ബ്ലൈറ്റ്": "കോപ്പർ ഓക്സിക്ലോറൈഡ് + സ്ട്രെപ്റ്റോസൈക്ലിൻ തളിക്കുക. നൈട്രജൻ ഉപയോഗം കുറയ്ക്കുക.",
+                    "ആരോഗ്യമുള്ള": "കീടനാശിനികൾ ആവശ്യമില്ല. ജലനിരപ്പ് നിലനിർത്തുന്നത് തുടരുക.."
                 }
                 
                 # Get the cure for the detected disease
-                recommended_cure = cures.get(diagnosis, "Consult an expert.")
+                recommended_cure = cures.get(diagnosis, "ഒരു വിദഗ്ദ്ധനെ സമീപിക്കുക.")
                 
                 # Save to session
                 st.session_state['last_diagnosis'] = diagnosis
                 st.session_state['last_cure'] = recommended_cure
                 
                 # 3. DISPLAY RESULTS
-                st.success(f"**Diagnosis:** {diagnosis}")
-                st.info(f"**Confidence:** {confidence:.2%}")
-                st.warning(f"**Recommended Cure:** {recommended_cure}")
+                st.success(f"**രോഗനിർണയം:** {diagnosis}")
+                st.info(f"**വിശ്വാസം:** {confidence:.2%}")
+                st.warning(f"**ശുപാർശ ചെയ്യുന്ന ചികിത്സ:** {recommended_cure}")
 
 # --- PART 2: MAP SEARCH ---
 st.divider()
-st.header("2. Find Medicine & Shops")
+st.header("2. വളം കടകൾ കണ്ടെത്തുക")
 
 # Starts EMPTY. User MUST type something.
-city_input = st.text_input("Enter your Town/City Name")
+city_input = st.text_input("നിങ്ങളുടെ പട്ടണത്തിന്റെയോ നഗരത്തിന്റെയോ പേര് നൽകുക")
 
-if st.button("Search Nearby Shops"):
+if st.button("സമീപത്തുള്ള കടകൾ തിരയുക"):
     if not city_input:
-        st.warning("⚠️ Please enter a city name first.")
+        st.warning("⚠️ ആദ്യം ഒരു നഗരത്തിന്റെ പേര് നൽകുക..")
     else:
         with st.spinner(f"Locating shops in {city_input}..."):
             # 1. Get Lat/Lon
             lat, lon = get_coordinates(city_input)
             
             if lat is not None:
-                st.success(f"📍 Found Location: {city_input}")
+                st.success(f"📍 ലൊക്കേഷൻ കണ്ടെത്തി: {city_input}")
                 
                 # 2. Fetch Shops
                 df_shops = get_real_shops(lat, lon)
@@ -169,8 +169,8 @@ if st.button("Search Nearby Shops"):
                         with st.expander(f"🛒 {row['name']} ({row['type']})"):
                             # Fixed the Google Maps link format for you
                             google_maps_link = f"https://www.google.com/maps/search/?api=1&query={row['lat']},{row['lon']}"
-                            st.markdown(f"[➡️ **Get Directions**]({google_maps_link})")
+                            st.markdown(f"[➡️ **ദിശകൾ നേടുക**]({google_maps_link})")
                 else:
-                    st.warning("No specific agricultural shops found in this area.")
+                    st.warning("ഈ പ്രദേശത്ത്  കാർഷിക കടകളൊന്നും കണ്ടെത്തിയില്ല..")
             else:
-                st.error("❌ Could not find that city. Please check the spelling.")
+                st.error("❌ആ നഗരം കണ്ടെത്താൻ കഴിഞ്ഞില്ല. ദയവായി അക്ഷരത്തെറ്റ് പരിശോധിക്കുക.")
