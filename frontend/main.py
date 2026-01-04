@@ -115,29 +115,38 @@ if uploaded_file is not None:
                 prediction = model.predict(data)
                 index = np.argmax(prediction)
 
+               # ... inside the Analyze Infection button logic ...
+
                 class_names = ["Brown Spot", "Bacterial Blight", "Healthy"] 
                 diagnosis = class_names[index]
                 confidence = float(prediction[0][index])
                 
-                # 2. DEFINE CURES
+                # 2. DEFINE CURES (Keys = English, Values = Malayalam)
                 cures = {
-                    "ബ്രൗൺ സ്പോട്ട്": "പ്രോപികൊണസോൾ (ടിൽറ്റ്) അല്ലെങ്കിൽ മാങ്കോസെബ് പോലുള്ള കുമിൾനാശിനികൾ ഉപയോഗിക്കുക. മണ്ണിലെ പോഷകങ്ങൾ മെച്ചപ്പെടുത്തുക.",
-                    "ബാക്ടീരിയൽ ബ്ലൈറ്റ്": "കോപ്പർ ഓക്സിക്ലോറൈഡ് + സ്ട്രെപ്റ്റോസൈക്ലിൻ തളിക്കുക. നൈട്രജൻ ഉപയോഗം കുറയ്ക്കുക.",
-                    "ആരോഗ്യമുള്ള": "കീടനാശിനികൾ ആവശ്യമില്ല. ജലനിരപ്പ് നിലനിർത്തുന്നത് തുടരുക.."
+                    "Brown Spot": "പ്രോപികൊണസോൾ (ടിൽറ്റ്) അല്ലെങ്കിൽ മാങ്കോസെബ് പോലുള്ള കുമിൾനാശിനികൾ ഉപയോഗിക്കുക. മണ്ണിലെ പോഷകങ്ങൾ മെച്ചപ്പെടുത്തുക.",
+                    "Bacterial Blight": "കോപ്പർ ഓക്സിക്ലോറൈഡ് + സ്ട്രെപ്റ്റോസൈക്ലിൻ തളിക്കുക. നൈട്രജൻ ഉപയോഗം കുറയ്ക്കുക.",
+                    "Healthy": "കീടനാശിനികൾ ആവശ്യമില്ല. ജലനിരപ്പ് നിലനിർത്തുന്നത് തുടരുക.."
                 }
                 
-                # Get the cure for the detected disease
+                # Get the cure
                 recommended_cure = cures.get(diagnosis, "ഒരു വിദഗ്ദ്ധനെ സമീപിക്കുക.")
                 
+                # Optional: Translate the Diagnosis name itself for display
+                diagnosis_malayalam = {
+                    "Brown Spot": "ബ്രൗൺ സ്പോട്ട്",
+                    "Bacterial Blight": "ബാക്ടീരിയൽ ബ്ലൈറ്റ്",
+                    "Healthy": "ആരോഗ്യമുള്ള"
+                }
+                display_name = diagnosis_malayalam.get(diagnosis, diagnosis)
+
                 # Save to session
-                st.session_state['last_diagnosis'] = diagnosis
+                st.session_state['last_diagnosis'] = display_name
                 st.session_state['last_cure'] = recommended_cure
                 
                 # 3. DISPLAY RESULTS
-                st.success(f"**രോഗനിർണയം:** {diagnosis}")
-                st.info(f"**വിശ്വാസം:** {confidence:.2%}")
-                st.warning(f"**ശുപാർശ ചെയ്യുന്ന ചികിത്സ:** {recommended_cure}")
-
+                st.success(f"**രോഗനിർണ്ണയം:** {display_name}")  # Diagnosis in Malayalam
+                st.info(f"**Confidence:** {confidence:.2%}")
+                st.warning(f"**പ്രതിവിധി:** {recommended_cure}") # Cure in Malayalam
 # --- PART 2: MAP SEARCH ---
 st.divider()
 st.header("2. വളം കടകൾ കണ്ടെത്തുക")
