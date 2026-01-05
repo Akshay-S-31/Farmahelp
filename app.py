@@ -18,7 +18,7 @@ translator = Translator()
 def get_weather(lat, lng):
     conn = http.client.HTTPSConnection("api.ambeedata.com")
     headers = {'x-api-key': api_key, 'Content-type': "application/json"}
-    url = f"/weather/latest/by-lat-lng?lat={lat}&lng={lng}"
+    url = f"/weather/forcast/by-lat-lng?lat={lat}&lng={lng}"
     conn.request("GET", url, headers=headers)
     res = conn.getresponse()
     return json.loads(res.read().decode("utf-8"))

@@ -13,9 +13,11 @@ headers = {
     'Content-type': "application/json"
 }
 
-conn.request("GET", "/weather/latest/by-lat-lng?lat=12.9889055&lng=77.574044", headers=headers)
+conn.request("GET", "/weather/forcast/by-lat-lng?lat=12.9889055&lng=77.574044", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
 
 print(data.decode("utf-8"))
+
+
